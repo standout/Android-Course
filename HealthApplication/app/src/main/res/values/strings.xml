@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">HealthApplication</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="calculateButton">Räkna ut</string>
+    <string name="lengthTextView">Ange längd i cm</string>
+    <string name="weightTextView">Ange vikt i kg</string>
+    <string name="resultTexView">0</string>
+
+</resources>
