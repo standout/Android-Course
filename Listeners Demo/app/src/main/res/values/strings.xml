@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Global values -->
+    <string name="app_name">Demo Vecka 2</string>
+    <!-- Menu values -->
+    <string name="action_refresh">Refresh</string>
+    <!-- Main Activity values -->
+    <string name="Listeners">Listeners/Events</string>
+    <string name="testBtn">Press me</string>
+    <string name="testBtnLong">Press me long</string>
+
+    <string name="inputControlsTv">Input Controls</string>
+    <string name="radioBtnHamburger">Hamburger</string>
+    <string name="radioBtnHotdog">Hotdog</string>
+
+    <string-array name="studentArray">
+        <item>Magnus Karlsson</item>
+        <item>David Åhrlander</item>
+        <item>Daniel Henriksen</item>
+        <item>Malin A</item>
+        <item>Joachim Bachstätter</item>
+        <item>Alexander Gunnarsson</item>
+        <item>Kristoffer Svensson</item>
+        <item>Tobias Friberg</item>
+        <item>Emma Blixt</item>
+        <item>Angelica</item>
+        <item>Nakhle Fransson</item>
+        <item>Johan Samuelsson</item>
+    </string-array>
+
+</resources>
