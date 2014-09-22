@@ -15,6 +15,7 @@ import com.example.hariskljajic.picassooptimizedadapter.Models.GalleryFrame;
  */
 public class GalleryDbHelper extends SQLiteOpenHelper {
 
+    // Constants
     private final static String DATABASE_NAME = "GalleryTable.db";
     private final static int DATABASE_VERSION = 4;
     private final static String COMMA_SEP = ",";
@@ -47,7 +48,7 @@ public class GalleryDbHelper extends SQLiteOpenHelper {
     public GalleryDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
+    // Create database method
     @Override
     public void onCreate(SQLiteDatabase db) {
         try{
@@ -58,7 +59,7 @@ public class GalleryDbHelper extends SQLiteOpenHelper {
             Log.d("GalleryDbHelper", ex.getMessage());
         }
     }
-
+    // Update database method
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if(newVersion != oldVersion){
@@ -72,7 +73,7 @@ public class GalleryDbHelper extends SQLiteOpenHelper {
 
         }
     }
-
+    // Get database data
     public Cursor get(){
 
         db = getReadableDatabase();
@@ -89,6 +90,7 @@ public class GalleryDbHelper extends SQLiteOpenHelper {
 
         return cursor;
     }
+    // Insert database data
     public long insert(GalleryFrame galleryFrame){
 
         db = getWritableDatabase();

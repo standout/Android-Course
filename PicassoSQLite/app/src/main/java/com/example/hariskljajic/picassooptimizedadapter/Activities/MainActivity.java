@@ -27,10 +27,16 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Create an instance of Gallery Database
         galleryDbHelper = new GalleryDbHelper(this);
+
+        // Get latest data
         Cursor galleryCursor = galleryDbHelper.get();
 
+        // Create an instance of adapter, pass context and galleryCursor from database
         picassoAdapter = new PicassoAdapter(this, galleryCursor, false);
+
+        // Set the adapter on the listview
         setListAdapter(picassoAdapter);
     }
 
@@ -55,7 +61,19 @@ public class MainActivity extends ListActivity {
     }
 
     public void addGalleryFrame(View view) {
-        GalleryFrame galleryFrame = new GalleryFrame("http://www.skk.se/PageFiles/3253/513-japansk-spets.jpg", "Haris", "Hejhejhejhejhej Hejhejhejhejhej Hejhejhejhejhej");
+
+        // Create a new object of GalleryFrame
+        GalleryFrame galleryFrame = new GalleryFrame("http://blogg.vk.se/wp-content/uploads/oldblog/316/images/juli2040annie.jpg", "Haris", "Hejhejhejhejhej Hejhejhejhejhej Hejhejhejhejhej");
+
+        // Insert galleryFrame object
         galleryDbHelper.insert(galleryFrame);
+
+        // Get latest data
+        Cursor galleryCursor = galleryDbHelper.get();
+        // Set new cursor data on the adapter.
+        picassoAdapter.changeCursor(galleryCursor);
+
+        // Notify data set changed
+        picassoAdapter.notifyDataSetChanged();
     }
 }
