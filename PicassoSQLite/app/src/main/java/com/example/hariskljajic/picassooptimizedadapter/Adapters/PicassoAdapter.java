@@ -10,10 +10,11 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.hariskljajic.picassooptimizedadapter.Data.Contracts.ContractGallery;
 import com.example.hariskljajic.picassooptimizedadapter.R;
 import com.squareup.picasso.Picasso;
 
-import static com.example.hariskljajic.picassooptimizedadapter.Data.Contracts.ContractGallery.Gallery;
+import static com.example.hariskljajic.picassooptimizedadapter.Data.Contracts.ContractGallery.*;
 
 /**
  * Created by Haris Kljajic on 2014-09-12.

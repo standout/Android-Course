@@ -73,6 +73,7 @@ public class GalleryDbHelper extends SQLiteOpenHelper {
 
         }
     }
+
     // Get database data
     public Cursor get(){
 
