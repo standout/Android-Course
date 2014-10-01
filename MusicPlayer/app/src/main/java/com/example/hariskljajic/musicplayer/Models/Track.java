@@ -1,4 +1,4 @@
-package com.example.hariskljajic.musicplayer;
+package com.example.hariskljajic.musicplayer.Models;
 
 /**
  * Created by Haris Kljajic on 2014-09-25.
@@ -63,5 +63,4 @@ public class Track {
     public String toString(){
         return name.split(".mp3")[0];
     }
-
 }

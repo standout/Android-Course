@@ -14,6 +14,10 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.hariskljajic.musicplayer.Activites.MusicActivity;
+import com.example.hariskljajic.musicplayer.Models.Track;
+import com.example.hariskljajic.musicplayer.Models.TrackListHelper;
+
 import java.util.ArrayList;
 
 /**
@@ -25,21 +29,20 @@ public class MusicService extends Service{
     public final static String ACTION = "action";
     private MediaPlayer mediaPlayer;
     private Track currentTrack;
+
     private ArrayList<Track> trackList;
     private boolean isStarted = false;
-
-    // Const Variables
-    final static int PLAY = 1;
-    final static int PAUSE = 2;
-    final static int PLAY_SONG = 3;
 
     @Override
     public void onCreate() {
         super.onCreate();
         Log.d("MusicService", "Creating service...");
         mediaPlayer = new MediaPlayer();
-        trackList = new ArrayList<Track>();
-        getTrackList();
+
+        TrackListHelper trackListHelper = new TrackListHelper(this);
+        if(trackListHelper.checkIfStorageAvailable()){
+            trackList = trackListHelper.get();
+        }
     }
 
     @Override
@@ -50,25 +53,25 @@ public class MusicService extends Service{
         int action = intent.getIntExtra(ACTION, 1);
 
         switch (action) {
-            case PLAY:
+            case TrackListHelper.PLAY:
                 mediaPlayer.start();
                 break;
-            case PAUSE:
+            case TrackListHelper.PAUSE:
                 mediaPlayer.pause();
                 break;
-            case PLAY_SONG:
+            case TrackListHelper.PLAY_SONG:
                 musicPlayer(trackList.get(track));
                 break;
             default:
                 break;
         }
         if(!isStarted)
-            OngoingNotification();
+            ongoingNotification();
 
-        return super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
 
-    private void OngoingNotification() {
+    private void ongoingNotification() {
         final int myID = 1234;
 
         //The intent to launch when the user clicks the expanded notification
@@ -117,62 +120,6 @@ public class MusicService extends Service{
         }
     }
 
-    /**
-     * Reads song list from media storage.
-     *
-     * @return
-     */
-    private void getTrackList() {
-        // Check for media storage
-        if (!checkIfStorageAvailable())
-            return;
-
-        Cursor musicResult = getContentResolver().query(
-                // using content resolver to read music from media storage
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                new String[] { MediaStore.Audio.Media.ARTIST,
-                        MediaStore.Audio.Media.ALBUM,
-                        MediaStore.Audio.Media.DISPLAY_NAME,
-                        MediaStore.Audio.Media.DATA
-                },
-                MediaStore.Audio.Media.IS_MUSIC + " > 0 ",
-                null,
-                null
-        );
-
-        if (musicResult.getCount() > 0) {
-            musicResult.moveToFirst();
-            Track prev = null;
-            do {
-                Track track = new Track(
-                        musicResult.getString(musicResult.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)),
-                        musicResult.getString(musicResult.getColumnIndex(MediaStore.Audio.Media.ARTIST)),
-                        musicResult.getString(musicResult.getColumnIndex(MediaStore.Audio.Media.ALBUM)),
-                        musicResult.getString(musicResult.getColumnIndex(MediaStore.Audio.Media.DATA))
-                );
-
-                if (prev != null) // here prev song linked to current one. To
-                    // simple play them in list
-                    prev.setNext(track);
-
-                prev = track;
-                trackList.add(track);
-            } while (musicResult.moveToNext());
-
-            prev.setNext(trackList.get(0)); // play in cycle;
-        }
-        musicResult.close();
-    }
-
-    /**
-     * Check state of media storage. True if mounted;
-     *
-     * @return
-     */
-    private boolean checkIfStorageAvailable() {
-        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
-    }
-
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -181,5 +128,10 @@ public class MusicService extends Service{
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d(MusicService.class.toString(), "Död!");
+        if(mediaPlayer.isPlaying()){
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
     }
 }
