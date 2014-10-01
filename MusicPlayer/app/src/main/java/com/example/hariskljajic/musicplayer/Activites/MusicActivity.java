@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.hariskljajic.musicplayer.Models.TrackListHelper;
 import com.example.hariskljajic.musicplayer.Services.MusicService;
@@ -25,6 +28,7 @@ public class MusicActivity extends ListActivity implements View.OnClickListener{
     // Variables
     private int currentTrack = 0;
     private boolean isPlaying = false;
+    ArrayList<Track> trackList;
 
     ImageButton playBtn;
     ImageButton nextBtn;
@@ -45,9 +49,21 @@ public class MusicActivity extends ListActivity implements View.OnClickListener{
             Log.d("MusicActivity", "Ja, den är tillgänglig!");
 
             // Using TrackListHelper to get playlist.
-            ArrayList<Track> trackList = trackListHelper.get();
-            // Creating an default array adapter using android layout and the playlist.
-            ArrayAdapter<Track> musicAdapter = new ArrayAdapter<Track>(this, android.R.layout.simple_list_item_1, trackList);
+            trackList = trackListHelper.get();
+            // Creating an custom array adapter the fast but VERY insufficient way which works with small lists, using android layout and the playlist.
+            ArrayAdapter<Track> musicAdapter = new ArrayAdapter<Track>(this, android.R.layout.simple_list_item_2, android.R.id.text1, trackList){
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View view = super.getView(position, convertView, parent);
+                    TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+                    TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+
+                    text1.setText(trackList.get(position).toString());
+                    text2.setText(trackList.get(position).getArtist());
+                    return view;
+                };
+
+        };
             // Sets the adapter created to the listView.
             setListAdapter(musicAdapter);
 
