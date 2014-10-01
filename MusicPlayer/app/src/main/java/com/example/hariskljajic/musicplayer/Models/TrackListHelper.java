@@ -15,15 +15,23 @@ public class TrackListHelper {
 
     private Context context;
 
-    // Const Variables
+    // Const variables
     public final static int PLAY = 1;
     public final static int PAUSE = 2;
     public final static int PLAY_SONG = 3;
 
+    public final static String TRACK = "track";
+    public final static String ACTION = "action";
+
+    // Total number of tracks in playlist.
+    public static int numberOfTracks;
+
+    // Constructor injecting a context to this helper.
     public TrackListHelper(Context context){
         this.context = context;
     }
 
+    // Querying all music from Audio media folder and converting it from cursor to ArrayList<Track>
     public ArrayList<Track> get(){
         Cursor musicResult = context.getContentResolver().query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -60,6 +68,8 @@ public class TrackListHelper {
             while (musicResult.moveToNext());
 
             prev.setNext(trackList.get(0)); //play in cycle;
+
+            numberOfTracks = musicResult.getCount();
         }
         Log.d("MusicActivity", "" + musicResult.getCount());
 
@@ -68,6 +78,7 @@ public class TrackListHelper {
         return trackList;
     }
 
+    // Method used to check if Storage is available before starting using it.
     public boolean checkIfStorageAvailable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {

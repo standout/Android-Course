@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".MusicService">
+        <service android:name=".Services.MusicService">
 
         </service>
 
